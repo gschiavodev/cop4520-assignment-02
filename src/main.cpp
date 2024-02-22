@@ -1,4 +1,6 @@
 
+// System includes
+#include <iostream>
 
 // Local includes
 #include "main.h"
@@ -11,19 +13,30 @@ constexpr Problems::Name problem_to_solve { Problems::Name::Minotaur_Birthday_Pa
 int main()
 {
 
+	// ...
+	int return_value;
+
+	// Execute the problem to solve
 	switch (problem_to_solve)
 	{
 
 		case Problems::Name::Minotaur_Birthday_Party:
-			return MinotaurBirthdayParty::main();
+			return_value = MinotaurBirthdayParty::main();
 
 		case Problems::Name::Minotaur_Crystal_Vase:
-			return MinotaurCrystalVase::main();
+			return_value = MinotaurCrystalVase::main();
 
 		default:
-			return 0;
+			return_value = 0;
 
 	}
+
+	// Give user time to see output prompts
+	std::cout << "\nPress any key to exit " << "\"" << Problems::to_string(problem_to_solve) << "\"..." << std::endl;
+	std::cin.get();
+
+	// Exit
+	return return_value;
 
 }
 
