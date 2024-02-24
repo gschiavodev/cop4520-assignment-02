@@ -3,6 +3,9 @@
 
 In this project we were given two problems to solve, each problem concerned N guests and each represented a thread. To run both problems, the `problem_to_solve` variable in `main.h` must be changed to one of the values in the enum list, such as `Minotaur_Birthday_Party` or `Minotaur_Crystal_Vase`. You can also change the number of guests (or threads) by updating the value of `n_guests` in the same file. Then recompile the program.
 
+#### Testing
+The program was tested on several different machines such as Windows, Linux, and MacOS with different values for N. However, since there was no real work to be done, it was mostly just the difference between having 1 or N threads (excluding the main thread).
+
 ### Problem 1: Minotaur’s Birthday Party
 
 Since the guests cannot communicate with each other in this problem, the solution I implemented was to designate one guest (or thread) to count. When guests would enter the labyrinth, if they saw a cupcake on the plate and they had not eaten one already, they would eat it and then leave without requesting another one. If there was no cupcake, they would just leave and not request another one. When the counting guest entered the room, they would also eat a cupcake if they had not already, but then he would request another one and account for another guest in their tally (themselves). If there was no cupcake when the counter entered, they would then know another guest had to have eaten one (they only can each eat one), so they would account for another guest in their tally, then request another cupcake for the next guest to enter and leave.
