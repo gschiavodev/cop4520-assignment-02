@@ -5,24 +5,27 @@
 
 // Local includes
 #include "MinotaurBirthdayParty.h"
+#include "main.h"
 
+// Static class attributes
 std::mutex MinotaurBirthdayParty::labyrinth;
-std::vector<PartyGuest> MinotaurBirthdayParty::party_guests;
+std::vector<std::unique_ptr<PartyGuest01>> MinotaurBirthdayParty::party_guests;
 std::atomic<bool> MinotaurBirthdayParty::all_guests_visited_the_labyrinth(false);
 bool MinotaurBirthdayParty::cupcake_is_on_plate(true);
+std::atomic<bool> PartyGuest01::party_is_over(false);
 
 int MinotaurBirthdayParty::main()
 {
 
-	// Reserve space for guests
-	party_guests.reserve(n_guests);
+	// ..
+	size_t n_guests = Problems::get_number_of_guests();
 
 	// The guests have arrived!
 	for (size_t i = 0; i < n_guests; i++)
 	{
 
 		bool is_the_counter = i == 0 ? true : false;
-		party_guests.emplace_back(i, is_the_counter);
+		party_guests.emplace_back(std::make_unique<PartyGuest01>(i, is_the_counter));
 
 	}
 
@@ -31,17 +34,22 @@ int MinotaurBirthdayParty::main()
 
 	// End the party!
 	std::cout << "\"Ok perfect, now get out!\" - Minotaur" << std::endl;
-	PartyGuest::party_is_over.store(true);
+	PartyGuest01::party_is_over.store(true);
+
+	// Let the guests leave
+	for (size_t i = 0; i < n_guests; i++)
+	{
+
+		// ..
+		std::thread& thread = party_guests.at(i)->get_thread();
+
+		if (thread.joinable())
+			thread.detach();
+		
+	}
 
 	// ..
 	return 0;
-
-}
-
-size_t MinotaurBirthdayParty::get_number_of_guests()
-{
-
-	return n_guests;
 
 }
 
@@ -75,9 +83,7 @@ void MinotaurBirthdayParty::eat_the_cupcake()
 
 }
 
-std::atomic<bool> PartyGuest::party_is_over(false);
-
-PartyGuest::State::State(size_t id, bool is_the_counter) :
+PartyGuest01::State::State(size_t id, bool is_the_counter) :
 
 	id(id),
 	ate_a_cupcake(false),
@@ -88,25 +94,25 @@ PartyGuest::State::State(size_t id, bool is_the_counter) :
 
 }
 
-PartyGuest::PartyGuest(size_t id, bool is_the_counter) :
+PartyGuest01::PartyGuest01(size_t id, bool is_the_counter) :
 
-	state(std::make_shared<State>(id, is_the_counter)),
-	thread(&PartyGuest::have_fun_at_the_party, this)
+	state(std::make_unique<State>(id, is_the_counter)),
+	thread(&PartyGuest01::have_fun_at_the_party, this)
 
 {
 
 }
 
-PartyGuest::PartyGuest(PartyGuest&& other) noexcept :
+PartyGuest01::PartyGuest01(PartyGuest01&& other) noexcept :
 
-	state(other.state),
+	state(std::move(other.state)),
 	thread(std::move(other.thread))
 
 {
 
 }
 
-PartyGuest::~PartyGuest()
+PartyGuest01::~PartyGuest01()
 {
 
 	if (thread.joinable())
@@ -114,14 +120,14 @@ PartyGuest::~PartyGuest()
 
 }
 
-void PartyGuest::count_party_guest()
+void PartyGuest01::count_party_guest()
 {
 
 	state->count++;
 
 }
 
-void PartyGuest::have_fun_at_the_party()
+void PartyGuest01::have_fun_at_the_party()
 {
 
 	while (!party_is_over.load()) 
@@ -150,12 +156,8 @@ void PartyGuest::have_fun_at_the_party()
 
 			// If the guest counting, counts that all guests ate, 
 			// announce that all guest entered the labyrinth at least once
-			if (state->count == MinotaurBirthdayParty::get_number_of_guests())
-			{
-
+			if (state->count == Problems::get_number_of_guests())
 				MinotaurBirthdayParty::guest_announcement();
-
-			}
 
 		}
 
@@ -166,7 +168,7 @@ void PartyGuest::have_fun_at_the_party()
 
 }
 
-std::thread& PartyGuest::get_thread() 
+std::thread& PartyGuest01::get_thread()
 {
 	
 	// Return thread by reference

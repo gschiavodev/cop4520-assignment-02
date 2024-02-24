@@ -5,8 +5,11 @@
 #include <atomic>
 #include <thread>
 #include <mutex>
+#include <memory>
 
-class PartyGuest;
+// Forward declarations
+class MinotaurBirthdayParty;
+class PartyGuest01;
 
 class MinotaurBirthdayParty
 {
@@ -15,8 +18,7 @@ public:
 	static std::mutex labyrinth;
 
 private:
-	static constexpr size_t n_guests { 20 };
-	static std::vector<PartyGuest> party_guests;
+	static std::vector<std::unique_ptr<PartyGuest01>> party_guests;
 	static std::atomic<bool> all_guests_visited_the_labyrinth;
 	static bool cupcake_is_on_plate;
 
@@ -24,7 +26,6 @@ public:
 
 	static int main();
 
-	static size_t get_number_of_guests();
 	static void guest_announcement();
 
 	static bool is_there_a_cupcake();
@@ -33,7 +34,7 @@ public:
 
 };
 
-class PartyGuest
+class PartyGuest01
 {
 
 public:
@@ -53,7 +54,7 @@ private:
 
 	};
 
-	std::shared_ptr<State> state;
+	std::unique_ptr<State> state;
 	std::thread thread;
 
 	void count_party_guest();
@@ -61,9 +62,9 @@ private:
 
 public:
 
-	PartyGuest(size_t id, bool is_the_counter);
-	PartyGuest(PartyGuest&& other) noexcept;
-	~PartyGuest();
+	PartyGuest01(size_t id, bool is_the_counter);
+	PartyGuest01(PartyGuest01&& other) noexcept;
+	~PartyGuest01();
 
 	std::thread& get_thread();
 

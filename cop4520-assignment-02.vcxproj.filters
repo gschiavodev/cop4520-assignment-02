@@ -24,6 +24,9 @@
     <ClCompile Include="src\MinotaurBirthdayParty.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\MCSLock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\main.h">
@@ -33,6 +36,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\MinotaurCrystalVase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MCSLock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

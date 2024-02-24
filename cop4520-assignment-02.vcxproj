@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\MCSLock.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MinotaurBirthdayParty.cpp" />
     <ClCompile Include="src\MinotaurCrystalVase.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="include\main.h" />
     <ClInclude Include="include\MinotaurBirthdayParty.h" />
     <ClInclude Include="include\MinotaurCrystalVase.h" />
+    <ClInclude Include="include\MCSLock.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

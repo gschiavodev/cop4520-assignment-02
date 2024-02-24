@@ -7,9 +7,6 @@
 #include "MinotaurBirthdayParty.h"
 #include "MinotaurCrystalVase.h"
 
-// Constants
-constexpr Problems::Name problem_to_solve { Problems::Name::Minotaur_Birthday_Party };
-
 int main()
 {
 
@@ -17,22 +14,25 @@ int main()
 	int return_value;
 
 	// Execute the problem to solve
-	switch (problem_to_solve)
+	switch (Problems::get_problem_to_solve())
 	{
 
 		case Problems::Name::Minotaur_Birthday_Party:
 			return_value = MinotaurBirthdayParty::main();
+			break;
 
 		case Problems::Name::Minotaur_Crystal_Vase:
 			return_value = MinotaurCrystalVase::main();
+			break;
 
 		default:
 			return_value = 0;
+			break;
 
 	}
 
 	// Give user time to see output prompts
-	std::cout << "\nPress any key to exit " << "\"" << Problems::to_string(problem_to_solve) << "\"..." << std::endl;
+	std::cout << "\nPress any key to exit " << "\"" << Problems::to_string(Problems::get_problem_to_solve()) << "\"..." << std::endl;
 	std::cin.get();
 
 	// Exit
@@ -43,7 +43,7 @@ int main()
 std::string Problems::to_string(Problems::Name problem_name)
 {
 
-	switch (problem_to_solve)
+	switch (problem_name)
 	{
 
 		case Problems::Name::Minotaur_Birthday_Party:
@@ -56,5 +56,19 @@ std::string Problems::to_string(Problems::Name problem_name)
 			return std::string("Name not found");
 
 	}
+
+}
+
+size_t Problems::get_number_of_guests()
+{
+
+	return n_guests;
+
+}
+
+Problems::Name Problems::get_problem_to_solve()
+{
+
+	return problem_to_solve;
 
 }
