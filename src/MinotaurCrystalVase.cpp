@@ -39,7 +39,7 @@ int MinotaurCrystalVase::main()
 		std::thread& thread = party_guests.at(i)->get_thread();
 
 		if (thread.joinable())
-			thread.detach();
+			thread.join();
 
 	}
 
